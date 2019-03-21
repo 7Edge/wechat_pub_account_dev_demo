@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css_hook %}
+    <link rel="stylesheet" href="{% static 'wx/css/cover.css' %}">
+    <style>
+        div.inner.cover
+    </style>
+{% endblock %}
+
+{% block title %}
+    <title>关注绑定微信账号</title>
+{% endblock %}
+
+{% block m_body %}
+    <div class="site-wrapper">
+
+        <div class="site-wrapper-inner">
+
+            <div class="cover-container">
+
+                <div class="masthead clearfix">
+                    <div class="inner">
+                        <h3 class="masthead-brand">Cover</h3>
+                        <nav>
+                            <ul class="nav masthead-nav">
+                                <li class="active"><a href="#">Home</a></li>
+                                <li><a href="#">Features</a></li>
+                                <li><a href="#">Contact</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="inner cover">
+                    <h3 class="cover-heading">请关注官方公众号并绑定微信号，及时接收重要消息</h3>
+                    <h4>第一步：微信扫码关注官方公众号</h4>
+                    <p class="lead">
+                        <image style="height: 200px;width: 200px"
+                               src="{% static 'wx/images/test_pub_qcode.jpg' %}"></image>
+                    </p>
+                    <h4>第二步：关注微信公众号后，点击绑定按钮，再次微信扫码绑定微信号</h4>
+                    <p class="lead">
+
+
+                    <div id="authorize_url_qrcode"></div>
+
+                    <button type="button" class="btn btn-lg btn-default">点击绑定微信号</button>
+                    </p>
+                </div>
+
+                <div class="mastfoot">
+                    <div class="inner">
+                        <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a
+                                href="https://twitter.com/mdo">@mdo</a>.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block js_hook %}
+    <script src="{% static 'js/jquery.qrcode.min.js' %}"></script>
+    <script>
+        $(function () {
+
+            // 点击获取授权url并生成二维码
+            $('div.inner.cover button').click(function () {
+                console.log(this);
+                console.log($(this));
+                // 发送ajax请求，获取a url which user will use it ot 授权 给 APPID公众号.
+
+                let $qrcode_container = $('#authorize_url_qrcode');
+                if ($qrcode_container[0].hasChildNodes()) {  // 如果又先清空再生成新的，相当于刷新。
+                    $qrcode_container.empty();
+                }
+
+                $.ajax({
+                    url: '/wx/get_authorize_url/',
+                    type: 'GET',
+                    success: function (res) {
+                        jQuery('#authorize_url_qrcode').qrcode({
+                            height: 150,
+                            width: 150,
+                            text: res.data
+                        })
+                    }
+                });
+
+            });
+
+        });
+    </script>
+{% endblock %}
+
+
+

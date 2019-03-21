@@ -10,6 +10,8 @@ verify_ssl = true
 django = "*"
 djangorestframework = "*"
 pymysql = "*"
+requests = "*"
+django-redis = "*"
 
 [requires]
 python_version = "3.7"

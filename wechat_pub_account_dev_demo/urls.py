@@ -20,5 +20,5 @@ from wx import urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path('wx/', include(('wx.urls', 'wx'), namespace='wx_interfaces'))
+    re_path('^wx/', include(('wx.urls', 'wx'), namespace='wx_interfaces'))
 ]

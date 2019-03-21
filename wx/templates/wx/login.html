@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css_hook %}
+    <link rel="stylesheet" href="{% static 'wx/css/signin.css' %}">
+{% endblock %}
+
+{% block m_body %}
+    <div class="container">
+
+        <form class="form-signin" method="post">
+            {% csrf_token %}
+            <h2 class="form-signin-heading">请登陆</h2>
+            <label for="inputLoginName" class="sr-only">Login Name</label>
+            <input type="text" id="inputLoginName" name="loginname" class="form-control" placeholder="Login Name"
+                   required autofocus>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password"
+                   required>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="session_2weeks" value="remember-me"> 记住登陆状态（2周）
+                </label>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">登 陆</button>
+        </form>
+
+    </div> <!-- /container -->
+{% endblock %}
+
