@@ -8,9 +8,14 @@
 """
 import wx_secrets
 import requests
+from django_redis import get_redis_connection
 
 
 def get_pub_access_token():
+    redis_conn = get_redis_connection('default')
+    if redis_conn.exists('zhangjiaqi_test_pub_account_access_token'):
+        return redis_conn.get('zhangjiaqi_test_pub_account_access_token')
+
     result = requests.get(url=wx_secrets.ACCESS_TOKEN_URL,
                           params={
                               'grant_type': 'client_credential',
@@ -18,6 +23,9 @@ def get_pub_access_token():
                               'secret': wx_secrets.WX_APPSECRET
                           }).json()
     access_token = result.get('access_token', None)
+
+    redis_conn.set('zhangjiaqi_test_pub_account_access_token', access_token, ex=7200)
+
     print('===》', access_token)
 
     return access_token

@@ -11,7 +11,17 @@ import json
 
 import wx_secrets
 
-from . import models
+
+class BaseMessageSender:
+
+    def send(self, to_who, message):
+        """
+        发送message消息给to_who
+        :param to_who:
+        :param message:
+        :return:
+        """
+        raise NotImplementedError("subclass of BaseMessageSender must provide a send() method")
 
 
 class WxMessageSender(object):
@@ -40,14 +50,17 @@ class WxMessageSender(object):
                                    'access_token': self.access_token
                                },
                                data=body).json()
+        print(result)
         return result
 
-    def tsend(self, openid, template):
-        requests.post(url=self.template_url,
-                      params={
-                          'access_token': self.access_token
-                      },
-                      json=template)
+    def tsend(self, template):
+        result = requests.post(url=self.template_url,
+                               params={
+                                   'access_token': self.access_token
+                               },
+                               json=template).json()
+        print('模板消息响应：', result)
+        return result
 
 
 if __name__ == '__main__':

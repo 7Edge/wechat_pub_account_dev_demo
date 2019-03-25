@@ -5,11 +5,12 @@
 # Date: 3/18/2019
 
 from django.urls import re_path
+from django.views.decorators.csrf import csrf_exempt
 
 from . import views
 
 urlpatterns = [
-    re_path('^wx_check/$', views.wx_check),
+    re_path('^wx_check/$', csrf_exempt(views.wx_check)),
     re_path('^bind_wx/$', views.bind_wx, name='bind_wx'),
     re_path('^login/$', views.login, name='login'),
     re_path('^callback_bind_wx/$', views.to_bind_wx, name='callback_bind_wx'),

@@ -152,7 +152,21 @@ def to_bind_wx(request):  # 获取到授权码后，访问微信开发平台获�
         return HttpResponse('授权失败，请重新扫码绑定！')
     else:
         sender = WxMessageSender(access_token=get_pub_access_token())
-        sender.csend(openid, 'Welcome!')
+        # sender.csend(openid, 'Welcome!')
+
+        sender.tsend({"touser": openid,
+                      "template_id": "l0YWmbUvpLkDDTzeliSmee7-lFjjvZTEnySh1xkviG4",
+                      "topcolor": "#FF0000",
+                      "data": {
+                          "datatime": {
+                              "value": datetime.now(tz=CHINA_TIMEZONE).strftime("%Y-%m-%d"),
+                              "color": "#173177"
+                          },
+                          "welcome": {
+                              "value": "Welcome to my 测试号",
+                              "color": "#173177"
+                          }
+                      }})
         return HttpResponse('授权成功，绑定成功')
 
 # Create your views here.
